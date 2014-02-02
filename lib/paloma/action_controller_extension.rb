@@ -9,7 +9,7 @@ module Paloma
       base.module_eval do
         prepend_view_path "#{Paloma.root}/app/views/"
 
-        before_filter :track_paloma_request
+        before_filter :track_paloma_request, :if => Proc.new { |c| %{ text/html */* }.include?(c.request.format) }
         after_filter :append_paloma_hook, :if => :html_is_rendered?
       end
     end
@@ -24,6 +24,7 @@ module Paloma
       # Use on controllers to pass variables to Paloma controller.
       #
       def js params = {}
+        return if session[:paloma_requests].blank?
         return session[:paloma_requests].pop if !params
         session[:paloma_requests].last[:params] = params
       end
