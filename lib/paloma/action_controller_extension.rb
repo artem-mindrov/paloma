@@ -54,7 +54,7 @@ module Paloma
       # will execute the tracked Paloma requests.
       #
       def append_paloma_hook
-        return true if session[:paloma_requests].empty?
+        return true if session[:paloma_requests].blank?
 
         hook = view_context.render(
                   :partial => 'paloma/hook',
